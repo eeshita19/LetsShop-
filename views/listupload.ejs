@@ -1,0 +1,16 @@
+<%- include ("./partials/header") %>
+
+<div class="div container">
+	<h1>Upload Items List for <%=username%></h1>
+	<form action="/<%=username%>/<%=campground%>/upload" method="post" enctype="multipart/form-data">
+		<div class="form-group">
+			<input class="form-control" type="file" name="image" placeholder="image url" style="width: auto;">
+		</div>
+		<div class="form-group"> 
+    		<button class="btn btn-lg btn-default btn-primary">Submit</button>
+		</div>
+	</form>
+</div>
+
+
+<%- include ("./partials/footer") %>
