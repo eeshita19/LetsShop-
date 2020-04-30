@@ -12,21 +12,24 @@
     </header>
 
 
-<div class="row">
-    <div class="col-sm-6 col-md-4">
-        /* for loop */
-      <div class="thumbnail">
-        <img src="..." alt="...">/* img id  */
+<div class="row"">
+  <% camp.lists.forEach(list => { %>
+    <div class="col-sm-6 col-md-4">  
+        <div class="thumbnail">
+        <img src="<%= list.link %>" alt="..."/>
         <div class="caption">
-          <h3>Customer name   /* username */</h3>
-          
-          <p><a href="#" class="btn btn-primary" role="button">CONFIRM PACKAGE</a> <a href="#" class="btn btn-danger" role="button">DELETE</a> </p>
+          <h3><%= list.username %></h3>
+          <p>
+            <a href="#" class="btn btn-primary" role="button">CONFIRM PACKAGE</a> <a href="#" class="btn btn-danger" role="button">DELETE</a> 
+          </p>
         </div>
       </div>
     </div>
+  <% }) %>
   </div>
 
 </div>
+
 
 
 
