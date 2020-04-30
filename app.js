@@ -25,10 +25,10 @@ dotenv.config();
 
 // const { multerUploads, dataUri } = require('./config/multer');
 
+const middlewareObj = require("./middleware/index")
+
 mongoose.connect('mongodb://rahul:abcde6@ds317808.mlab.com:17808/orderfrom', {
     useNewUrlParser: true,
-    useFindAndModify: false,
-    useCreateIndex: true,
     useUnifiedTopology: true,
 });
 
@@ -115,20 +115,24 @@ app.post('/:username/:campground/upload', upload.single('image'),(req, res) => {
                 res.redirect("/campgrounds");
             }
             else {
-                const secureUrl = { secure_url: `${result.secure_url}` }
-                List.create(secureUrl, async function (err, list) {
+                const listObj = {
+                    username: req.user.username,
+                    link: result.secure_url
+                }
+                List.create(listObj, async function (err, list) {
                     if (err) {
                         req.flash("error", "Something went wrong");
                         console.log("ERROR: " + err);
                     }
                     else {
-                        list.author.id = req.user._id;
-                        list.author.username = req.user.username;
-                        list.author.link = result.secure_url
-    
+                        // list.author.id = req.user._id;
+                        // list.author.username = req.user.username;
+                        // list.author.link = result.secure_url
+                        console.log(list);
                         campground.lists.push(list);
+                        console.log(`Campground from past ${list}`)
                         await campground.save();
-                        console.log(list)
+                        // console.log(`Campground from future ${list}`);
                         req.flash("success", "Successfully added comment");
                         res.redirect("/campgrounds/" + campground._id);
                     }
@@ -140,8 +144,10 @@ app.post('/:username/:campground/upload', upload.single('image'),(req, res) => {
 });
 
 
-app.get('/dashboard',(req, res) => {
-    res.render("dashboard");
+app.get('/:id/dashboard',middlewareObj.isLoggedIn,(req, res) => {
+    campground.findById(req.params.id).populate("lists").exec((err, camp) => { 
+        res.render("dashboard", { camp: camp });
+    })
 });
 
 

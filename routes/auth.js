@@ -35,7 +35,7 @@ router.get("/login",function(req,res){
 //middleware
 
 router.post("/login",passport.authenticate("local",{
-    successRedirect: "/dashboard",
+    successRedirect: "/campgrounds",
     failureRedirect: "/login"
 }) , function(req,res){ });
 
